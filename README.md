@@ -1,184 +1,267 @@
-# K Explore — Responsive Event Management Platform
+# Pulse — Event Discovery & Management Platform
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8.svg)](https://tailwindcss.com/)
-[![Vite](https://img.shields.io/badge/Vite-6.0-646cff.svg)](https://vitejs.dev/)
-[![Tests](https://img.shields.io/badge/Tests-17%20Passed-brightgreen.svg)](https://vitest.dev/)
+Pulse is a responsive event discovery and management web application designed to simplify how users explore events, register for gatherings, and manage their digital tickets.
 
-> **Task Title:** Design and Develop a Responsive Event Management Website  
-> **Course / Unit:** K Explore – Web Designing  
-> **Evaluation Criteria:** Creativity, UI/UX, Functionality, Responsiveness, Code Quality, Documentation, Deployment.
+The platform provides a centralized interface for discovering campus events, hackathons, technical workshops, cultural programmes, and other gatherings. It also includes event management tools for organizers, allowing them to create events, monitor registrations, and manage attendee information.
 
----
+The application is built using React, TypeScript, and Vite, with a focus on usability, responsive design, and maintainable frontend architecture.
 
-> **Implementation status (important):** The current checked-in application is a frontend demonstration. Event data, registrations, waitlists, favourites, theme preference, and demo user state are stored in the visitor's browser using `localStorage`. The current source does **not** include a connected Supabase/Firebase backend, server API, real authentication, cross-device synchronization, or server-side ticket verification. The database/API documents describe a proposed design and should not be interpreted as deployed backend functionality.
+## Features
 
-## 1. Project Overview
+### Event Discovery
+- Browse upcoming and featured events through a responsive event catalogue.
+- Search events by title, description, and venue.
+- Filter events by category and date.
+- Sort events based on available criteria.
+- View event descriptions, schedules, speakers, and venue information.
+- Track upcoming events using live countdown timers.
 
-**K Explore** is a modern, responsive event discovery and lifecycle management platform built for campus gatherings, tech hackathons, design workshops, and cultural summits. 
+### Registration and Digital Tickets
+- Register for events using a validated registration form.
+- Validate user details using Zod schemas.
+- Prevent duplicate registrations and enforce event capacity limits.
+- Generate individual digital tickets with unique reference codes.
+- Display QR codes containing ticket reference information.
+- Print digital tickets using a print-friendly layout.
+- Cancel existing registrations.
 
-Designed with inspiration from **Linear, Apple, and Raycast**, the application features a dark-first obsidian interface (`#09090b`), high-contrast typography, **Electric Lime** (`#D4FF00`) interactive accents, and smooth micro-interactions.
+### Attendee Dashboard
+- View registered events and corresponding tickets.
+- Track upcoming event dates.
+- Manage saved and bookmarked events.
+- Access registration details and cancel bookings.
 
-### Key Capabilities
+### Event Management
+- Create, update, and remove events through the Organizer Studio.
+- Monitor event capacity and registration counts.
+- View attendee registration records.
+- Export attendee information as CSV files.
+- Manage waitlists when events reach their registration limits.
 
-1. **Editorial Hero & Bento-Grid Spotlight:** Dynamic introduction with real-time stats and spotlighted featured events.
-2. **Synchronized Live Countdowns:** Real-time ticking timers (`08d 14h 22m 10s`) rendered with tabular numeric alignment to prevent layout shifting.
-3. **Multi-Faceted Search & Filtering:** Real-time search by keyword, venue, or title; category filters (Tech, Workshops, Cultural, Sports, Arts, Business); date range filtering; and sorting.
-4. **Interactive Event Detail View:** Modal view presenting full schedules, agendas, speaker profiles, venue locations, and calendar sync (Google Calendar & `.ics` download).
-5. **Form Validation with Zod:** JavaScript/TypeScript validation checking name bounds, RFC 5322 compliant emails, and 10-digit phone numbers before submission.
-6. **Digital Ticket Pass with Dynamic QR Code:** Perforated ticket with printable PDF styling and SVG QR code encoding ticket verification data.
-7. **Capacity & Waitlist System:** Prevents overbooking; sold-out events allow users to join a priority waitlist queue.
-8. **Attendee Dashboard ("My Tickets"):** Review registered tickets, live countdowns to registered events, download passes, and cancel registrations.
-9. **Organizer Studio:** Role-gated dashboard allowing organizers to create, edit, delete events, inspect registration quotas, and export attendee rosters to `.csv`.
-10. **Theme Switcher:** Dark-first design with accessible Light Mode toggle, persisting in `localStorage`.
+### Additional Functionality
+- Dark and light themes with persistent preferences.
+- Google Calendar integration.
+- Downloadable `.ics` calendar files.
+- Responsive layouts for mobile, tablet, and desktop.
+- Interactive UI elements and subtle animations.
 
----
+## Technology Stack
 
-## 2. Technology Stack
+| Area | Technology |
+|---|---|
+| Frontend | React 18, TypeScript |
+| Build Tool | Vite 6 |
+| Styling | Tailwind CSS 3 |
+| Icons | Lucide React |
+| Form Validation | React Hook Form, Zod |
+| Animations | Framer Motion |
+| Notifications | Toast-based UI components |
+| QR Generation | QR code library |
+| Testing | Vitest, React Testing Library |
+| Data Persistence | Browser LocalStorage |
 
-- **Framework:** React (TypeScript)
-- **Bundler:** Vite
-- **Styling:** Tailwind CSS (custom dark-first design tokens)
-- **Icons:** Lucide React
-- **Validation:** React Hook Form + Zod
-- **Visual Effects:** Canvas Confetti
-- **Testing:** Vitest + React Testing Library + jsdom
-- **Persistence:** Strongly-typed LocalStorage domain engine (`StorageService`) with seed catalog
-
----
-
-## 3. Project Structure
+## Project Structure
 
 ```text
+Pulse/
 ├── docs/
-│   ├── PROJECT_SPEC.md          # Comprehensive Product Specification
-│   ├── SYSTEM_ARCHITECTURE.md   # System Architecture & Diagrams
-│   ├── DATABASE_DESIGN.md       # PostgreSQL DDL & Local Schema
-│   ├── API_SPECIFICATION.md     # REST Contracts & Service Interfaces
-│   ├── USER_FLOWS.md            # Interaction Sequence Diagrams
-│   ├── SECURITY_DESIGN.md       # Threat Model & OWASP Compliance
-│   ├── IMPLEMENTATION_PLAN.md   # Milestone Execution Plan
-│   └── DECISIONS.md             # Architecture Decision Records (ADRs)
+│   ├── PROJECT_SPEC.md
+│   ├── SYSTEM_ARCHITECTURE.md
+│   ├── DATABASE_DESIGN.md
+│   ├── API_SPECIFICATION.md
+│   ├── USER_FLOWS.md
+│   ├── SECURITY_DESIGN.md
+│   ├── IMPLEMENTATION_PLAN.md
+│   └── DECISIONS.md
 │
 ├── src/
 │   ├── components/
-│   │   ├── common/              # Buttons, inputs, modals
-│   │   ├── layout/              # Navbar, Footer, Container
-│   │   ├── hero/                # FeaturedSpotlight, Bento grid
-│   │   ├── events/              # EventCard, EventGrid, FilterBar, CountdownBadge
-│   │   ├── detail/              # EventDetailModal
-│   │   ├── registration/        # RegistrationModal, TicketPassModal, WaitlistModal
-│   │   ├── dashboard/           # AttendeeDashboardModal
-│   │   └── organizer/           # OrganizerStudioModal
-│   ├── context/                 # AuthContext, ThemeContext, ToastContext
-│   ├── data/                    # seedEvents.ts, demoAccounts.ts
-│   ├── hooks/                   # useCountdown.ts, useEventFilters.ts
-│   ├── services/                # storageService.ts
-│   ├── utils/                   # calendar.ts, csvExport.ts, dateUtils.ts, qr.ts
-│   ├── validation/              # registrationSchema.ts
-│   ├── App.tsx                  # Main Application Orchestrator
-│   ├── index.css                # Tailwind directives & design tokens
-│   └── main.tsx                 # Entrypoint
+│   │   ├── common/
+│   │   ├── layout/
+│   │   ├── hero/
+│   │   ├── events/
+│   │   ├── detail/
+│   │   ├── registration/
+│   │   ├── dashboard/
+│   │   └── organizer/
+│   │
+│   ├── context/
+│   ├── data/
+│   ├── hooks/
+│   ├── services/
+│   ├── utils/
+│   ├── validation/
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
 │
-├── tests/                       # Automated Test Suite (17 tests)
-│   ├── storageService.test.ts   # Duplicate prevention, capacity, cancellation
-│   ├── countdown.test.ts        # Countdown time math & expiration guards
-│   ├── filters.test.ts          # Search indexing & category filtering
-│   ├── foundation.test.tsx      # Theme toggle & layout components
-│   └── registrationFlow.test.tsx# Form validation & interactive user journey
+├── tests/
+│   ├── storageService.test.ts
+│   ├── countdown.test.ts
+│   ├── filters.test.ts
+│   ├── foundation.test.tsx
+│   └── registrationFlow.test.tsx
 │
-├── AGENTS.md                    # Persistent instructions for agents
+├── AGENTS.md
+├── README.md
 ├── package.json
+├── package-lock.json
 ├── tailwind.config.js
 ├── tsconfig.json
 └── vite.config.ts
 ```
 
----
-
-## 4. Getting Started & Installation
+## Getting Started
 
 ### Prerequisites
-- Node.js (v18.0.0 or higher)
-- npm or yarn
+
+Ensure the following are installed:
+
+- Node.js 18 or later
+- npm 9 or later
+- Git
 
 ### Installation
+
+Clone the repository:
+
 ```bash
-# 1. Clone repository
-git clone <your-github-repo-url>
-cd "K Explore"
+git clone <repository-url>
+```
 
-# 2. Install dependencies
+Navigate to the project directory:
+
+```bash
+cd Pulse
+```
+
+Install the dependencies:
+
+```bash
 npm install
+```
 
-# 3. Start development server
+Start the development server:
+
+```bash
 npm run dev
 ```
-Open `http://localhost:5173` in your browser.
 
----
+Open the local development URL displayed in the terminal. By default, Vite uses:
 
-## 5. Verification & Testing
+```text
+http://localhost:5173
+```
+
+## Testing and Build
+
+The project uses Vitest and React Testing Library for automated testing.
+
+Run the test suite:
 
 ```bash
-# Run Vitest test suite
 npm test
+```
 
-# Run strict TypeScript compiler check & production build
+Generate a production build:
+
+```bash
 npm run build
+```
 
-# Preview production build locally
+Preview the production build locally:
+
+```bash
 npm run preview
 ```
 
-### Actual Test Results (Verified)
-- **Test Files:** 5 passed (5)
-- **Tests:** 17 passed (17)
-- **TypeScript Checking:** 0 errors
-- **Production Build:** Succeeded (`dist/`)
+The production-ready static files are generated inside the `dist/` directory.
+
+### Test Coverage
+
+The current test suite contains 17 tests across five test files, covering:
+
+- Local data storage and registration management.
+- Duplicate registration and event capacity handling.
+- Countdown calculations and date boundaries.
+- Event search and filtering.
+- Theme switching and component behaviour.
+- Registration form validation and user interactions.
+
+The recorded verification results are 17 passing tests and a successful production build.
+
+## Architecture and Data Persistence
+
+Pulse currently follows a frontend-only architecture.
+
+The application uses a service layer to separate event and registration operations from the UI components. This makes the application easier to maintain and provides a foundation for integrating a backend in the future.
+
+Browser LocalStorage is used to persist:
+
+- Event catalogue changes.
+- User registrations.
+- Saved events.
+- Waitlist entries.
+- Theme preferences.
+- Demo user state.
+
+**Current limitations**
+
+The application does not currently use a connected backend or server-side database.
+
+Consequently:
+
+- Data is stored separately in each browser.
+- Registrations are not synchronized across devices or users.
+- Demo role switching is not equivalent to real authentication.
+- QR codes represent ticket reference information but are not verified by a secure server.
+- LocalStorage data can be modified by the browser user.
+
+The database and API specifications in the `docs/` directory describe potential backend implementations and are not deployed services.
+
+## Deployment
+
+Pulse can be deployed as a static website using Vercel or Netlify.
+
+### Vercel
+
+1. Push the project to a GitHub repository.
+2. Import the repository into Vercel.
+3. Configure the following build settings:
+
+| Setting | Value |
+|---|---|
+| Framework | Vite |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+| Install Command | `npm ci` |
+
+4. Deploy the application.
+
+### Netlify
+
+Build the project:
+
+```bash
+npm run build
+```
+
+Deploy the generated `dist/` directory using Netlify.
+
+## Project Evaluation
+
+The application has been developed with the following objectives:
+
+- A consistent and responsive user interface.
+- Accessible event discovery and registration workflows.
+- Reusable React components and TypeScript interfaces.
+- Input validation and client-side data safety.
+- Persistent browser-based data management.
+- Automated testing and production build verification.
+- Clear technical documentation and deployment support.
 
 ---
 
-## 6. Static Deployment Guide
+**Pulse — Event Discovery & Management Platform**
 
-The application builds to zero-dependency static assets in `dist/`.
-
-### Deploy to Vercel
-```bash
-npx vercel
-```
-*Or import the GitHub repository in the Vercel dashboard. Build command: `npm run build`, Output directory: `dist`.*
-
-### Deploy to Netlify
-```bash
-npx netlify deploy --prod --dir=dist
-```
-*Or drag-and-drop the `dist/` folder into Netlify Drop.*
-
-### Deploy to GitHub Pages
-1. In `package.json`, ensure `"base": "./"` is set in `vite.config.ts` (already configured).
-2. Run `npm run build`.
-3. Deploy the `dist/` directory to your `gh-pages` branch.
-
----
-
-## 7. Submission Checklist
-
-- [x] Responsive on mobile phones (320px–480px), tablets, and desktops
-- [x] Hero section introducing platform with key metrics
-- [x] Upcoming & featured events showcase (Bento grid)
-- [x] Event cards with name, date, venue, image, and short description
-- [x] Live search and category filters (instant, zero page-reloads)
-- [x] Detailed event modal with agenda and venue details
-- [x] Registration form collecting Name, Email, Phone, and Event
-- [x] JavaScript form validation (Zod schema checking email syntax & 10-digit phone)
-- [x] Confirmation notification & printable digital ticket with SVG QR code
-- [x] Bonus 1: Dark / Light Mode with LocalStorage persistence
-- [x] Bonus 2: Live synchronized event countdown timers
-- [x] Bonus 3: Framer Motion & CSS smooth micro-interactions
-- [x] Bonus 4: LocalStorage registration data management & cancellation
-- [x] Advanced 1: Personal Attendee Dashboard ("My Tickets" & Saved Events)
-- [x] Advanced 2: Organizer Studio (Event CRUD, Roster inspection, CSV export)
-- [x] Advanced 3: Waitlist queueing for sold-out events
-- [x] Advanced 4: Google Calendar and `.ics` file synchronization
+Built using React, TypeScript, and Vite.
